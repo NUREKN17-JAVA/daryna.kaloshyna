@@ -21,7 +21,7 @@ public class HsqldbUserDaoTest extends TestCase {
 
 	public void testCreate() {
 		try {
-			fail("Not yet implemented");
+			
 			User user = new User();
 			user.setFirstName("Daryna");
 			user.setLastName("Kaloshyna");
