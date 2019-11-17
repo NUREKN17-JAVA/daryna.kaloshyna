@@ -22,7 +22,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 	private static final long TEST_ID = 1001;
     private static final String FIRST_NAME = "Daryna";
     private static final String LAST_NAME = "Kaloshyna";
-	private static final Long ID = 4L;
+
 	
 	@Override
 	protected void setUp() throws Exception {
