@@ -3,12 +3,20 @@ package UM.kaloshyna.nure.db;
 import java.io.IOException;
 import java.util.Properties;
 
+import javax.management.RuntimeErrorException;
+
 public class DaoFactory {
 	
 	private static final String USER_DAO = "dao.UM.kaloshyna.nure.db.UserDao";
 	private final Properties properties;
 	
-	public DaoFactory() {
+	private final static DaoFactory INSTANCE = new DaoFactory();
+	
+	public static DaoFactory getInstance() {
+		return INSTANCE;
+	    }
+	
+	private DaoFactory() {
 		properties = new Properties();
 		try {
 			properties.load(getClass().getClassLoader().getResourceAsStream("settings.properties"));
@@ -30,8 +38,8 @@ public class DaoFactory {
 		UserDao result = null;
 		try {
 			Class clazz = Class.forName(properties.getProperty(USER_DAO));
-			UserDao userDao = (UserDao) clazz.newInstance();
-			userDao.setConnectionFactory(getConnectionFactory());
+			result = (UserDao) clazz.newInstance();
+			result.setConnectionFactory(getConnectionFactory());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
