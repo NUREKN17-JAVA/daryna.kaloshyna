@@ -40,7 +40,6 @@ public class MainFrameTest extends JFCTestCase {
 		find(JTable.class, "userTable");
 		find(JButton.class, "addButton");
 		find(JButton.class, "editButton");
-		find(JButton.class, "buttonButton");
 		find(JButton.class, "detailsButton");
 		
 	}
