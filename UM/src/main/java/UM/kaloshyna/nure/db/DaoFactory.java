@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import javax.management.RuntimeErrorException;
+import javax.swing.JTextField;
 
 
 public abstract class DaoFactory {
@@ -65,5 +66,6 @@ public abstract class DaoFactory {
 	    }
 	    return result;
 	  }
+	
 	
 }
