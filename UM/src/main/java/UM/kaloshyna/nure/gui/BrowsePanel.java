@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import UM.kaloshyna.nure.util.Messages;
+
 public class BrowsePanel extends JPanel implements ActionListener {
 
 	private MainFrame parent;
@@ -27,15 +29,15 @@ public class BrowsePanel extends JPanel implements ActionListener {
 	}
 
 	private void initialize() {
-		this.setName("browsePanel");
+		this.setName("browsePanel"); //$NON-NLS-1$
 		this.setLayout(new BorderLayout());
-		this.add(getTablePanel(), BorderLayout.CENTER);
+		this.add(getTablePanel(),BorderLayout.CENTER);
 		this.add(getButtonsPanel(), BorderLayout.SOUTH);
-		
 	}
 
 	private JPanel getButtonsPanel() {
-		if(buttonPanel == null) {
+		if(buttonPanel == null)
+		{
 			buttonPanel = new JPanel();
 			buttonPanel.add(getAddButton(), null);
 			buttonPanel.add(getEditButton(), null);
@@ -46,68 +48,76 @@ public class BrowsePanel extends JPanel implements ActionListener {
 	}
 
 	private JButton getDetailsButton() {
-		if (detailsButton == null) {
+		if(detailsButton == null)
+		{
 			detailsButton = new JButton();
-			detailsButton.setText("Детали");
-			detailsButton.setName("detailsButton");
+			detailsButton.setText(Messages.getString("BrowsePanel.details")); //$NON-NLS-1$
+			detailsButton.setName("detailsButton"); //$NON-NLS-1$
+			detailsButton.setActionCommand("details"); //$NON-NLS-1$
 			detailsButton.addActionListener(this);
 		}
 		return detailsButton;
 	}
 
 	private JButton getDeleteButton() {
-		if(deleteButton == null) {
+		if(deleteButton == null)
+		{
 			deleteButton = new JButton();
-			deleteButton.setText("Удалить");
-			deleteButton.setName("deleteButton");
+			deleteButton.setText(Messages.getString("BrowsePanel.delete")); //$NON-NLS-1$
+			deleteButton.setName("deleteButton"); //$NON-NLS-1$
+			deleteButton.setActionCommand("delete"); //$NON-NLS-1$
 			deleteButton.addActionListener(this);
 		}
 		return deleteButton;
 	}
 
 	private JButton getEditButton() {
-		if(editButton == null) {
+		if(editButton == null)
+		{
 			editButton = new JButton();
-			editButton.setText("Редактировать");
-			editButton.setName("editButton");
+			editButton.setText(Messages.getString("BrowsePanel.edit")); //$NON-NLS-1$
+			editButton.setName("editButton"); //$NON-NLS-1$
+			editButton.setActionCommand("edit"); //$NON-NLS-1$
 			editButton.addActionListener(this);
 		}
 		return editButton;
 	}
 
 	private JButton getAddButton() {
-		if (addButton == null) {
+		if(addButton == null)
+		{
 			addButton = new JButton();
-			addButton.setText("Добавить");
-			addButton.setName("addButton");
+			addButton.setText(Messages.getString("BrowsePanel.add")); //$NON-NLS-1$
+			addButton.setName("addButton"); //$NON-NLS-1$
+			addButton.setActionCommand("add"); //$NON-NLS-1$
 			addButton.addActionListener(this);
 		}
 		return addButton;
 	}
 
 	private JScrollPane getTablePanel() {
-		if (tablePanel == null) {
-			
+		if(tablePanel == null)
+		{
 			tablePanel = new JScrollPane(getUserTable());
-			
 		}
 		return tablePanel;
 	}
 
 	private JTable getUserTable() {
-		if (userTable == null) {
-			
+		if (userTable == null)
+		{
 			userTable = new JTable();
-			userTable.setName("userTable");
-			
+			userTable.setName("userTable"); //$NON-NLS-1$
 		}
 		return userTable;
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void actionPerformed(ActionEvent e) {
+		String actionCommand = e.getActionCommand();
+		if ("add".equalsIgnoreCase(actionCommand)) { //$NON-NLS-1$
+			this.setVisible(false);
+			parent.showAddPanel();
+		}
 	}
-
 }

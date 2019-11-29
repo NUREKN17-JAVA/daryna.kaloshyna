@@ -1,12 +1,14 @@
 package UM.kaloshyna.nure.gui;
 
 import java.awt.Component;
+import java.awt.Window;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import UM.kaloshyna.nure.gui.MainFrame;
 import junit.extensions.jfcunit.JFCTestCase;
 import junit.extensions.jfcunit.JFCTestHelper;
 import junit.extensions.jfcunit.eventdata.MouseEventData;
@@ -14,7 +16,7 @@ import junit.extensions.jfcunit.finder.NamedComponentFinder;
 
 public class MainFrameTest extends JFCTestCase {
 
-	private MainFrame mainFrame;
+	private Window mainFrame;
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -28,12 +30,14 @@ public class MainFrameTest extends JFCTestCase {
 		getHelper().cleanUp(this);
 		super.tearDown();
 	}
-	private Component find(Class componentClass, String name) {
+	
+	private Component find(Class componentClass, String name)
+	{
 		NamedComponentFinder finder;
-		finder = new NamedComponentFinder (componentClass, name);
+		finder = new NamedComponentFinder(componentClass,name);
 		finder.setWait(0);
 		Component component = finder.find(mainFrame, 0);
-		assertNotNull("Could not find component '" + name + "'", component);
+		assertNotNull("Could not find component '" + name +"'", component);
 		return component;
 	}
 	
@@ -42,22 +46,20 @@ public class MainFrameTest extends JFCTestCase {
 		find(JTable.class, "userTable");
 		find(JButton.class, "addButton");
 		find(JButton.class, "editButton");
+		find(JButton.class, "deleteButton");
 		find(JButton.class, "detailsButton");
-		
 	}
-	public void testAddUser () {
+	
+	public void testAddUser() {
 		JButton addButton = (JButton) find(JButton.class, "addButton");
 		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
 		
-		
 		find(JPanel.class, "addPanel");
 		
-		
-		find(JTextField.class, "FirstNameField");
-		find(JTextField.class, "LastNameField");
-		find(JTextField.class, "DateOfBirthField");
+		find(JTextField.class, "firstNameField");
+		find(JTextField.class, "lastNameField");
+		find(JTextField.class, "dateOfBirthField");
 		find(JButton.class, "okButton");
 		find(JButton.class, "cancelButton");
 	}
-
 }

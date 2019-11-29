@@ -6,9 +6,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.sql.Statement;
 
 import UM.kaloshyna.nure.User;
 
@@ -33,7 +33,7 @@ public class HsqldbUserDao implements UserDao {
 	}
 	
 	
-	
+
 	@Override
 	public void update(User user) throws DatabaseException {
 		PreparedStatement preparedStatement = null;

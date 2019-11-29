@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import javax.management.RuntimeErrorException;
-import javax.swing.JTextField;
 
 
 public abstract class DaoFactory {
@@ -26,7 +25,6 @@ public abstract class DaoFactory {
 			throw new RuntimeException(e);
 		}
 	}
-	
 	public static synchronized DaoFactory getInstance() {
 		if(instance == null) {
 			Class factoryClass;
@@ -56,16 +54,15 @@ public abstract class DaoFactory {
 	}
 	
 	public abstract UserDao getUserDao(); {
-	    UserDao result = null;
-	    try {
-	      Class clazz = Class.forName(properties.getProperty(USER_DAO));
-	      result = (UserDao) clazz.newInstance();
-	      result.setConnectionFactory(getConnectionFactory());
-	    }catch (Exception e) {
-	      throw new RuntimeException(e);
-	    }
-	    return result;
-	  }
-	
+		UserDao result = null;
+		try {
+			Class clazz = Class.forName(properties.getProperty(USER_DAO));
+			result = (UserDao) clazz.newInstance();
+			result.setConnectionFactory(getConnectionFactory());
+		}catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		return result;
+	}
 	
 }
