@@ -13,8 +13,12 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import com.mockobjects.dynamic.Mock;
+
+import UM.kaloshyna.nure.User;
 import UM.kaloshyna.nure.db.DaoFactory;
 import UM.kaloshyna.nure.db.DaoFactoryImpl;
+import UM.kaloshyna.nure.db.MockDaoFactory;
 import UM.kaloshyna.nure.db.MockUserDao;
 import UM.kaloshyna.nure.gui.MainFrame;
 import junit.extensions.jfcunit.JFCTestCase;
@@ -25,28 +29,42 @@ import junit.extensions.jfcunit.finder.NamedComponentFinder;
 
 public class MainFrameTest extends JFCTestCase {
 
-	private Window mainFrame;
+	private MainFrame mainFrame;
+	
+	private Mock mockUserDao;
 
 	protected void setUp() throws Exception {
 		super.setUp();
 		
+		try {
+		
 		Properties properties = new Properties();
-		properties.setProperty("dao.UM.kaloshyna.nure.db.UserDao", 
-				MockUserDao.class.getName());
-		properties.setProperty("dao.factory", DaoFactoryImpl.class
+		
+		properties.setProperty("dao.factory", MockDaoFactory.class
 				.getName());
 		
-		DaoFactory.getInstance().init(properties);
-		
+		DaoFactory.init(properties);
+		mockUserDao = ((MockDaoFactory) DaoFactory.getInstance())
+				.getMockUserDao();
+		mockUserDao.expectAndReturn("findAll", new ArrayList());
 		setHelper(new JFCTestHelper());
 		mainFrame = new MainFrame();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		mainFrame.setVisible(true);
 	}
 
 	protected void tearDown() throws Exception {
+		try {
+		mockUserDao.verify();
 		mainFrame.setVisible(false);
 		getHelper().cleanUp(this);
 		super.tearDown();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private Component find(Class componentClass, String name)
@@ -74,6 +92,20 @@ public class MainFrameTest extends JFCTestCase {
 	}
 	
 	public void testAddUser() {
+		try {
+			String firstName = "Daryna";
+			String lastName = "Kaloshyna";
+			Date now = new Date();
+			
+		User user = new User(firstName, lastName, now);
+		
+		User expectedUser = new User(new Long(1), firstName, lastName, now);
+		mockUserDao.expectAndReturn("create", user, expectedUser);
+		
+		ArrayList users = new ArrayList();
+		users.add(expectedUser);
+		mockUserDao.expectAndReturn("findAll", users);
+		
 		JTable userTable = (JTable) find(JTable.class, "userTable");
 		assertEquals(0, userTable.getRowCount());
 		
@@ -88,10 +120,11 @@ public class MainFrameTest extends JFCTestCase {
 		JButton okButton = (JButton) find(JButton.class, "okButton");
 		find(JButton.class, "cancelButton");
 		
-		getHelper().sendString(new StringEventData(this, firstNameField, "Daryna"));
-		getHelper().sendString(new StringEventData(this, lastNameField, "Kaloshyna"));
+		
+		getHelper().sendString(new StringEventData(this, firstNameField, firstName));
+		getHelper().sendString(new StringEventData(this, lastNameField, lastName));
 		DateFormat formatter = DateFormat.getDateInstance();
-		String date = formatter.format(new Date());
+		String date = formatter.format(now);
 		getHelper().sendString(new StringEventData(this, dateOfBirthField, date));
 		
 		getHelper().enterClickAndLeave(new MouseEventData(this, okButton));
@@ -99,6 +132,9 @@ public class MainFrameTest extends JFCTestCase {
 		find(JPanel.class, "browsePanel");
 		userTable = (JTable) find(JTable.class, "userTable");
 		assertEquals(1, userTable.getRowCount());
+		} catch(Exception e) {
+			fail (e.toString());
+		}
 		
 		
 	}
