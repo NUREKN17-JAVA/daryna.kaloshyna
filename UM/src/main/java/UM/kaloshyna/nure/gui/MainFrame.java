@@ -7,6 +7,8 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import UM.kaloshyna.nure.db.DaoFactory;
+import UM.kaloshyna.nure.db.UserDao;
 import UM.kaloshyna.nure.util.Messages;
 
 
@@ -17,14 +19,21 @@ public class MainFrame extends JFrame {
 	private JPanel contentPanel;
 	private JPanel browsePanel;
 	private AddPanel addPanel;
+	private UserDao dao;
 
 	public MainFrame()
 	{
 		super();
+		dao = DaoFactory.getInstance().getUserDao();
 		initialize();
 	}
 	
 	
+	public UserDao getDao() {
+		return dao;
+	}
+
+
 	private void initialize() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
@@ -48,6 +57,7 @@ public class MainFrame extends JFrame {
 		{
 			browsePanel = new BrowsePanel(this);
 		}
+		((BrowsePanel)browsePanel).initTable();
 			return browsePanel;
 		}
 
@@ -57,7 +67,10 @@ public class MainFrame extends JFrame {
 
 	}
 
-
+	public void showBrowsePanel() {
+        showPanel(getBrowsePanel());
+    }
+	
 	public void showAddPanel() {
 		showPanel(getAddPanel());
 	}
@@ -77,5 +90,6 @@ public class MainFrame extends JFrame {
 		}
 		return addPanel;
 	}
+
 
 }
