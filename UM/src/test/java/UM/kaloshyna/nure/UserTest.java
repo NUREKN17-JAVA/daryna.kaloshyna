@@ -46,7 +46,7 @@ public class UserTest extends TestCase {
 		user.setPhone("+380123123123");
 		user.setContry("Ukraine");
 		user.setAdress("Kharkiv.X.X");
-		assertEquals("Daryna, Kaloshyna Ukraine Kharkiv.X.X +380123123123, Daryna@gmail.com", user.getFullInformation());
+		assertEquals("Daryna, Kaloshyna Ukraine Kharkiv.X.X +380123123123, Oleksandr@gmail.com", user.getFullInformation());
 	}
 	public void  testGetContact()
 	{
