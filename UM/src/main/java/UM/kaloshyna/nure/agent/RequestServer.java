@@ -1,16 +1,13 @@
 package UM.kaloshyna.nure.agent;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
 
 import UM.kaloshyna.nure.User;
 import UM.kaloshyna.nure.db.DaoFactory;
 import UM.kaloshyna.nure.db.DatabaseException;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
+import java.util.*;
 
 public class RequestServer extends CyclicBehaviour {
 
@@ -29,8 +26,8 @@ public class RequestServer extends CyclicBehaviour {
         }
     }
 
-	private Collection<User> parseMessage(ACLMessage message) {
-		Collection<User> users = new LinkedList<User>();
+    private Collection parseMessage(ACLMessage message) {
+        Collection<User> users = new LinkedList<User>();
 
         String content = message.getContent();
         if (content != null) {
@@ -46,37 +43,35 @@ public class RequestServer extends CyclicBehaviour {
             }
         }
         return users;
-	}
+    }
 
-	private ACLMessage createReply(ACLMessage message) {
-	     ACLMessage reply = message.createReply();
+    private ACLMessage createReply(ACLMessage message) {
+        ACLMessage reply = message.createReply();
 
-	        String content = message.getContent();
-	        StringTokenizer tokenizer = new StringTokenizer(content, ",");
-	        if (tokenizer.countTokens() == 2) {
-	            String firstName = tokenizer.nextToken();
-	            String lastName = tokenizer.nextToken();
+        String content = message.getContent();
+        StringTokenizer tokenizer = new StringTokenizer(content, ",");
+        if (tokenizer.countTokens() == 2) {
+            String firstName = tokenizer.nextToken();
+            String lastName = tokenizer.nextToken();
 
-	            Collection<User> users = null;
-	            try {
-	                users = DaoFactory.getInstance().getUserDao().find(firstName, lastName);
-	            } catch (DatabaseException e) {
-	                e.printStackTrace();
-	                users = new ArrayList<>(0);
-	            }
+            Collection<User> users = null;
+            try {
+                users = DaoFactory.getInstance().getUserDao().find(firstName, lastName);
+            } catch (DatabaseException e) {
+                e.printStackTrace();
+                users = new ArrayList<>(0);
+            }
 
-	            StringBuffer buffer = new StringBuffer();
-	            for (Iterator it = users.iterator(); it.hasNext();) {
-	                User user = (User) it.next();
-	                buffer.append(user.getId()).append(",");
-	                buffer.append(user.getFirstName()).append(",");
-	                buffer.append(user.getLastName()).append(";");
-	            }
+            StringBuffer buffer = new StringBuffer();
+            for (Iterator it = users.iterator(); it.hasNext();) {
+                User user = (User) it.next();
+                buffer.append(user.getId()).append(",");
+                buffer.append(user.getFirstName()).append(",");
+                buffer.append(user.getLastName()).append(";");
+            }
 
-	            reply.setContent(buffer.toString());
-	        }
-	        return reply;
-	    }
-	}
-
+            reply.setContent(buffer.toString());
+        }
+        return reply;
+    }
 }
